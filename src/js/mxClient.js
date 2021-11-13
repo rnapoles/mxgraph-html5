@@ -191,6 +191,13 @@ var mxClient =
   	IS_SVG: navigator.appName.toUpperCase() != 'MICROSOFT INTERNET EXPLORER',
 
 	/**
+	 * Variable: IS_HTML5
+	 *
+	 * True if the browser supports SVG.
+	 */
+  	IS_HTML5: !!(document.createElement('canvas') && document.createElement('canvas').getContext && document.createElement('canvas').getContext('2d')),
+
+	/**
 	 * Variable: NO_FO
 	 *
 	 * True if foreignObject support is not available. This is the case for
@@ -267,7 +274,7 @@ var mxClient =
 	 */
 	isBrowserSupported: function()
 	{
-		return mxClient.IS_VML || mxClient.IS_SVG;
+		return mxClient.IS_VML || mxClient.IS_SVG || mxClient.IS_HTML5;
 	},
 
 	/**

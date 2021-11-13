@@ -54,6 +54,13 @@
 	RENDERING_HINT_FASTEST: 'fastest',
 
 	/**
+	 * Variable: DIALECT_HTML5
+	 * 
+	 * Defines the HTML5 display dialect name.
+	 */
+	DIALECT_HTML5: 'html5',
+
+	/**
 	 * Variable: DIALECT_SVG
 	 * 
 	 * Defines the SVG display dialect name.

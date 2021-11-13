@@ -644,7 +644,11 @@ function mxGraph(container, model, renderHint, stylesheet)
 	// Converts the renderHint into a dialect
 	this.renderHint = renderHint;
 
-	if (mxClient.IS_SVG)
+	if (mxClient.IS_HTML5)
+	{
+		this.dialect = mxConstants.DIALECT_HTML5;
+	}
+	else if (mxClient.IS_SVG)
 	{
 		this.dialect = mxConstants.DIALECT_SVG;
 	}

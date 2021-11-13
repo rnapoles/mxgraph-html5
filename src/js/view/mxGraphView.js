@@ -1276,22 +1276,25 @@ mxGraphView.prototype.resetValidationState = function()
  */
 mxGraphView.prototype.stateValidated = function(state)
 {
-	var fg = (this.graph.getModel().isEdge(state.cell) && this.graph.keepEdgesInForeground) ||
-		(this.graph.getModel().isVertex(state.cell) && this.graph.keepEdgesInBackground);
-	var htmlNode = (fg) ? this.lastForegroundHtmlNode || this.lastHtmlNode : this.lastHtmlNode;
-	var node = (fg) ? this.lastForegroundNode || this.lastNode : this.lastNode;
-	var result = this.graph.cellRenderer.insertStateAfter(state, node, htmlNode);
+  
+  if(this.graph.dialect != mxConstants.DIALECT_HTML5){
+    var fg = (this.graph.getModel().isEdge(state.cell) && this.graph.keepEdgesInForeground) ||
+      (this.graph.getModel().isVertex(state.cell) && this.graph.keepEdgesInBackground);
+    var htmlNode = (fg) ? this.lastForegroundHtmlNode || this.lastHtmlNode : this.lastHtmlNode;
+    var node = (fg) ? this.lastForegroundNode || this.lastNode : this.lastNode;
+    var result = this.graph.cellRenderer.insertStateAfter(state, node, htmlNode);
 
-	if (fg)
-	{
-		this.lastForegroundHtmlNode = result[1];
-		this.lastForegroundNode = result[0];
-	}
-	else
-	{
-		this.lastHtmlNode = result[1];
-		this.lastNode = result[0];
-	}
+    if (fg)
+    {
+      this.lastForegroundHtmlNode = result[1];
+      this.lastForegroundNode = result[0];
+    }
+    else
+    {
+      this.lastHtmlNode = result[1];
+      this.lastNode = result[0];
+    }
+  }
 };
 
 /**
@@ -2536,7 +2539,10 @@ mxGraphView.prototype.init = function()
 	// Creates the DOM nodes for the respective display dialect
 	var graph = this.graph;
 	
-	if (graph.dialect == mxConstants.DIALECT_SVG)
+	if (graph.dialect == mxConstants.DIALECT_HTML5)
+	{
+		this.createHtml5();
+	} else if (graph.dialect == mxConstants.DIALECT_SVG)
 	{
 		this.createSvg();
 	}
@@ -2895,6 +2901,32 @@ mxGraphView.prototype.createSvg = function()
 		root.style.overflow = 'hidden';
 	}
 
+	if (container != null)
+	{
+		container.appendChild(root);
+		this.updateContainerStyle(container);
+	}
+};
+
+/**
+ * Function: createHtml5
+ *
+ * Creates and returns the DOM nodes for the SVG display.
+ */
+mxGraphView.prototype.createHtml5 = function()
+{
+	var container = this.graph.container;
+	var root = this.canvas = document.createElement('canvas');
+
+	root.style.left = '0px';
+	root.style.top = '0px';
+	root.style.width = '100%';
+	root.style.height = '100%';
+	
+	// NOTE: In standards mode, the SVG must have block layout
+	// in order for the container DIV to not show scrollbars.
+	root.style.display = 'block';  
+  
 	if (container != null)
 	{
 		container.appendChild(root);

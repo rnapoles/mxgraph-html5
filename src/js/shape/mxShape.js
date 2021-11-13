@@ -304,7 +304,7 @@ mxShape.prototype.getSvgScreenOffset = function()
 mxShape.prototype.create = function(container)
 {
 	var node = null;
-	console.log(container)
+
 	if (container != null && container.ownerSVGElement != null)
 	{
 		node = this.createSvg(container);
